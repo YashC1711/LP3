@@ -1,0 +1,53 @@
+import pandas as pd
+import numpy as np
+import seaborn as sns
+import matplotlib.pyplot as plt
+from sklearn.compose import ColumnTransformer
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import LabelEncoder, OneHotEncoder, StandardScaler
+from sklearn.svm import SVC, LinearSVC
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn import metrics
+from sklearn import preprocessing
+
+df = pd.read_csv('C://Users/Jatin/Desktop/Lp3prac/ML/churn_modelling.csv')
+df.info()
+
+df.head()
+
+df.isna().sum()
+
+df.drop(columns=['RowNumber', 'CustomerId', 'Surname'], inplace=True)
+
+df.describe()
+
+X=df.iloc[:, :df.shape[1]-1].values            #Independent Variables
+y=df.iloc[:, -1].values                        #Dependent Variable
+X.shape, y.shape
+
+print(X[:8,1], '... will now become: ')
+label_X_country_encoder = LabelEncoder()
+X[:,1] = label_X_country_encoder.fit_transform(X[:,1])
+print(X[:8,1])
+
+transform = ColumnTransformer([("countries", OneHotEncoder(), [1])], remainder="passthrough") # 
+X = transform.fit_transform(X)
+X
+
+X = X[:,1:]
+X.shape
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=0)
+
+sc=StandardScaler()
+X_train[:,np.array([2,4,5,6,7,10])] = sc.fit_transform(X_train[:,np.array([2,4,5,6,7,10])])
+X_test[:,np.array([2,4,5,6,7,10])] = sc.transform(X_test[:,np.array([2,4,5,6,7,10])])
+
+sc=StandardScaler()
+X_train = sc.fit_transform(X_train)
+X_test = sc.transform(X_test)
+X_train
+
+from tensorflow.keras.models import Sequential
+# Initializing the ANN
+classifier = Sequential()

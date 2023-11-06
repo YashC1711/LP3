@@ -1,0 +1,18 @@
+def print_fibonacci_series(n): #iterative
+    a, b = 0, 1
+    for _ in range(n):
+        print(a, end=' ')
+        a, b = b, a + b
+
+n = int(input("Enter the number of terms in the Fibonacci series: "))
+print_fibonacci_series(n)
+
+
+def fibonacci_series(n, a=0, b=1):  #recursive
+    if n == 0:
+        return
+    print(a, end=' ')
+    fibonacci_series(n-1, b, a+b)
+
+n = int(input("Enter the number of terms in the Fibonacci series: "))
+fibonacci_series(n)

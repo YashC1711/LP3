@@ -1,0 +1,40 @@
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+
+df = pd.read_csv("C://Users/Jatin/Desktop/Lp3prac/ML/emails.csv")
+df.head()
+
+df.isnull().sum()
+
+df.drop('Email No.',axis=1,inplace=True)
+
+x=df.drop(['Prediction'],axis=1)
+y=df['Prediction']
+
+from sklearn.preprocessing import scale
+x=scale(x)
+from sklearn.model_selection import train_test_split
+x_train,x_test,y_train,y_test=train_test_split(x,y,test_size=0.3)
+
+from sklearn.neighbors import KNeighborsClassifier
+knn=KNeighborsClassifier(n_neighbors=7)
+knn.fit(x_train,y_train)
+y_pred=knn.predict(x_test)
+print("Prediction ",y_pred)
+
+from sklearn.metrics import accuracy_score,confusion_matrix
+print("KNN accuracy ",accuracy_score(y_test,y_pred))
+print(confusion_matrix(y_test,y_pred))
+
+from sklearn.svm import SVC
+#cost C=1
+model=SVC(C=1)
+#fit
+model.fit(x_train,y_train)
+#predict
+pred=model.predict(x_test)
+print(pred)
+
+print("SVM Accuracy ",accuracy_score(y_test,pred))
+print(confusion_matrix(y_test,pred))

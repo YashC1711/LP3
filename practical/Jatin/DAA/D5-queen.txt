@@ -1,0 +1,38 @@
+def is_safe(board, row, col, n):
+    for i in range(row):       # Check if no queen attacks in the same column
+        if board[i][col] == 1:
+            return False
+        
+    for i, j in zip(range(row, -1, -1), range(col, -1, -1)):   # Check if no queen attacks on the left diagonal
+        if board[i][j] == 1:
+            return False
+    
+    for i, j in zip(range(row, -1, -1), range(col, n)):        # Check if no queen attacks on the right diagonal
+        if board[i][j] == 1:
+            return False
+    
+    return True
+
+def solve_n_queens(board, row, n):
+    if row == n:
+        for row in board:       # All queens are placed, and the solution is found
+            print(" ".join(['1' if cell == 1 else '0' for cell in row]))
+        print("\n")
+    else:
+        for col in range(n):
+            if is_safe(board, row, col, n):
+                board[row][col] = 1
+                solve_n_queens(board, row + 1, n)
+                board[row][col] = 0  # Backtrack
+
+def place_first_queen_and_solve(n, col):
+    if col < 0 or col >= n:
+        print("Invalid column for the first queen.")
+    else:
+        board = [[0] * n for _ in range(n)]
+        board[0][col] = 1
+        solve_n_queens(board, 1, n)
+
+n =int(input("Enter no. of queen: ")) # Change this to the desired board size
+first_queen_column = 1  # Change this to the desired column for the first queen
+place_first_queen_and_solve(n, first_queen_column)

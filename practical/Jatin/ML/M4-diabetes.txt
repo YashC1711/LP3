@@ -1,0 +1,30 @@
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+
+df = pd.read_csv('C://Users/Jatin/Desktop/Lp3prac/ML/diabetes.csv')
+df.head()
+
+df.columns
+
+df.isnull().sum()
+
+x=df.drop(['Outcome'],axis=1)
+y=df['Outcome']
+
+from sklearn.preprocessing import scale
+from sklearn.model_selection import train_test_split
+x=scale(x)
+x_train,x_test,y_train,y_test=train_test_split(x,y,test_size=0.3)
+
+from sklearn.neighbors import KNeighborsClassifier
+knn=KNeighborsClassifier(n_neighbors=7)
+knn.fit(x_train,y_train)
+y_pred=knn.predict(x_test)
+print(y_pred)
+
+from sklearn.metrics import accuracy_score,precision_score,recall_score,classification_report
+print("Accuracy_score",accuracy_score(y_test,y_pred))
+print("Error rate",1-accuracy_score(y_test,y_pred))
+print("Recall score ",recall_score(y_test,y_pred))
+print("Classification report ",classification_report(y_test,y_pred))
